@@ -1,5 +1,6 @@
 CC = clang
 
+
 TARGET_EXEC ?= main.out
 
 BUILD_DIR ?= ./build
@@ -13,11 +14,12 @@ DEPS := $(OBJS:.o=.d)
 INC_DIRS := $(shell find $(SRC_DIRS) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
-CPPFLAGS ?= $(INC_FLAGS) -MMD -MP -lstdc++ -g -Wall 
+CPPFLAGS ?=  $(INC_FLAGS)  -MMD -MP  -g -Wall 
+CFLAGS := -lGL -lstdc++ -lglfw -lGLEW
 
 $(OUTPUT_DIR)/$(TARGET_EXEC): $(OBJS)
 	mkdir output
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $@ $(LDFLAGS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS)  -o $@ $(LDFLAGS)
 
 # c++ source
 $(BUILD_DIR)/%.cpp.o: %.cpp
