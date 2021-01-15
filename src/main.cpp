@@ -5,22 +5,13 @@
 #include <string>
 #include <sstream>
 
-#define GL_CALL(x) GLClearErrors;\
-                    x;\
-                    GLCheckError(#x, __FILE__, __LINE__);
+#include "renderer.h"
+
+#include "indexBuffer.h"
+#include "vertexBuffer.h"
+#include "vertexArray.h"
 
 using namespace std;
-
-static void GLClearErrors()
-{
-    while(glGetError() != GL_NO_ERROR);
-}
-
-static void GLCheckError(const char *function, const char *file, int line){
-    while(GLenum error = glGetError() != GL_NO_ERROR)
-        cout << "[OpenGL error] (" << error << "): " << function << " " << file << ":" << line << endl;
-    
-}
 
 struct ShaderProgramSource
 {
@@ -108,6 +99,10 @@ int main(void)
     if (!glfwInit())
         return -1;
 
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
@@ -136,20 +131,16 @@ int main(void)
          2, 3, 0
      };
 
-    unsigned int buffer; 
-    GL_CALL(glGenBuffers(1, &buffer));
-    GL_CALL(glBindBuffer(GL_ARRAY_BUFFER, buffer));
-    GL_CALL(glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), postions, GL_STATIC_DRAW));
+    VertexArray va;
 
-    GL_CALL(glEnableVertexAttribArray(0));
-    GL_CALL(glVertexAttribPointer(0, 2, GL_FLOAT, false, 2*sizeof(float), 0));
+    VertexBuffer *vb = new VertexBuffer(postions, 4 * 2 * sizeof(float));
 
 
-    unsigned int ibo; 
-    GL_CALL(glGenBuffers(1, &ibo));
-    GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
-    GL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indices, GL_STATIC_DRAW));
+    VertexBufferLayout layout;
+    layout.push({GL_FLOAT, 2, false});
+    va.AddBuffer(*vb, layout);
 
+    IndexBuffer *ib = new IndexBuffer( indices, 6 );
 
     ShaderProgramSource source = ParseShaders("res/shaders/Basic.shader");
 
@@ -166,9 +157,11 @@ int main(void)
     int i = 0;
     while (!glfwWindowShouldClose(window))
     {
-        
         i = (i + 50) % 1000;
         GL_CALL(glUniform4f(u_Color_loction, ((float)((i + 300)%1000))/1000, ((float)((i + 600)%1000))/1000, ((float)((i + 900)%1000))/1000, 1.0f));
+        
+        va.bind();
+        
         /* Render here */
         GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 
@@ -183,6 +176,8 @@ int main(void)
     GL_CALL(glDeleteProgram(shader));
     glfwTerminate();
 
+    free(vb);
+    free(ib);
 
     cout << "end" << endl;
     return 0;
