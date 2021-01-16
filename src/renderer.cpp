@@ -12,7 +12,22 @@ void GLClearErrors()
 
 void GLCheckError(const char *function, const char *file, int line)
 {
-    while(GLenum error = glGetError() != GL_NO_ERROR)
+    GLenum error;
+    while((error = glGetError()) != GL_NO_ERROR)
         cout << "[OpenGL error] (" << error << "): " << function << " " << file << ":" << line << endl;
     
+}
+
+
+void Renderer::Draw(const VertexArray& va, const  IndexBuffer& ib, const  Shader& shader) const
+{
+    va.bind();
+    ib.bind();
+    shader.bind();
+    GL_CALL(glDrawElements(GL_TRIANGLES, ib.getCount(), GL_UNSIGNED_INT, nullptr));
+}
+
+void Renderer::Clear() const
+{
+    GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
 }

@@ -14,5 +14,5 @@ class IndexBuffer
     void bind() const;
     void unbind() const;
 
-    inline unsigned int getCount(){ return m_Count; };
+    inline unsigned int getCount() const { return m_Count; };
 };

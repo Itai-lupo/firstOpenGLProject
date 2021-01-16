@@ -15,9 +15,10 @@ INC_DIRS := $(shell find $(SRC_DIRS) -type d)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
 CPPFLAGS ?=  $(INC_FLAGS)  -MMD -MP  -g -Wall 
-CFLAGS := -lGL -lstdc++ -lglfw -lGLEW
+CFLAGS := -lGL -lstdc++ -lglfw -lGLEW  -lc -lrt -lm -ldl
 
 $(OUTPUT_DIR)/$(TARGET_EXEC): $(OBJS)
+	rm -rf output
 	mkdir output
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS)  -o $@ $(LDFLAGS)
 
