@@ -138,7 +138,7 @@ int Shader::GetUniformLocation(const std::string& name)
     if(m_UniformLoctionCache.find(name) != m_UniformLoctionCache.end()) 
         return m_UniformLoctionCache[name];
 
-    GL_CALL(m_UniformLoctionCache[name] = glGetUniformLocation(m_RendererID, "u_Color"));
+    GL_CALL(m_UniformLoctionCache[name] = glGetUniformLocation(m_RendererID, name.c_str()));
 
     return m_UniformLoctionCache[name];
 }

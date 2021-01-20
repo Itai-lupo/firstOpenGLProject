@@ -51,7 +51,7 @@ int main(void)
         std::cout << "error" <<endl;
 
     float postions[16] = {
-        100.0f, 100.0f, 0.0f, 0.0f,
+        100.0f, 100.0f,  0.0f, 0.0f,
         150.0f, 100.0f, 1.0f, 0.0f,
         150.0f, 150.0f, 1.0f, 1.0f,
         100.0f, 150.0f, 0.0f, 1.0f
@@ -59,14 +59,6 @@ int main(void)
 
     glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
 
-    for(glm::vec2 *i = (glm::vec2 *)postions; i < (glm::vec2 *)&postions[16]; i += 2)
-    {
-        cout << glm::to_string(*i) << " --> ";
-        glm::vec4 temp(*i, 1.0f, 1.0f);
-        *i = proj * temp;        
-        cout << glm::to_string(*i) << endl;
-
-    }
 
 
     unsigned int indices[6] = {
