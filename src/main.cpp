@@ -4,6 +4,9 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 #include "renderer.h"
 
@@ -33,7 +36,7 @@ int main(void)
 
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(960, 540, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -47,12 +50,24 @@ int main(void)
     if(glewInit() != GLEW_OK)
         std::cout << "error" <<endl;
 
-    float postions[16] = { 
-        -0.5f,  -0.5f,  0.0f,   0.0f,
-        0.5f,   -0.5f,  1.0f,   0.0f,
-        0.5f,   0.5f,   1.0f,   1.0f,
-        -0.5f,   0.5f,  0.0f,   1.0f,
-     };
+    float postions[16] = {
+        100.0f, 100.0f, 0.0f, 0.0f,
+        150.0f, 100.0f, 1.0f, 0.0f,
+        150.0f, 150.0f, 1.0f, 1.0f,
+        100.0f, 150.0f, 0.0f, 1.0f
+    };
+
+    glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+
+    for(glm::vec2 *i = (glm::vec2 *)postions; i < (glm::vec2 *)&postions[16]; i += 2)
+    {
+        cout << glm::to_string(*i) << " --> ";
+        glm::vec4 temp(*i, 1.0f, 1.0f);
+        *i = proj * temp;        
+        cout << glm::to_string(*i) << endl;
+
+    }
+
 
     unsigned int indices[6] = {
          0, 1, 2,
@@ -75,10 +90,13 @@ int main(void)
 
     IndexBuffer *ib = new IndexBuffer( indices, 6 );
 
+
+
     Shader shader("res/shaders/Basic.shader");
     
     shader.bind();
     shader.setUniform4f("u_Color", 0.0f, 0.0f, 1.0f, 1.0f);
+    shader.setUniformMat4f("u_MVP", proj);
 
     Texture texture("res/textures/5_star.png");
     texture.bind();

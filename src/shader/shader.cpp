@@ -4,6 +4,9 @@
 #include <fstream>
 #include <sstream>
 
+#include <glm/gtx/string_cast.hpp>
+
+
 #include "renderer.h"
 
 using namespace std;
@@ -122,6 +125,11 @@ void Shader::setUniform1i(const std::string& name, int value)
 void Shader::setUniform1f(const std::string& name, float value)
 {
     GL_CALL(glUniform1f(GetUniformLocation(name), value));
+}
+
+void Shader::setUniformMat4f(const std::string& name,  glm::mat4& value)
+{   
+    GL_CALL(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0]));
 }
 
 
