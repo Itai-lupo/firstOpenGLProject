@@ -28,9 +28,9 @@ namespace test{
 
             template <typename T>
             void registerTest(const std::string& name)
-        {
-            tests.push_back(std::make_pair(name, [](){ return new T();}));
-        }
+            {
+                tests.push_back(std::make_pair(name, [](){ return new T();}));
+            }
 
     };
 }

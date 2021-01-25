@@ -1,9 +1,5 @@
 #include "testMenu.h"
 
-#include "testClearColor.h"
-#include "testClearColor2.h"
-
-#include <iostream>
 #include <GL/glew.h>
 #include "renderer.h"
 #include "imgui/imgui.h"
@@ -26,8 +22,8 @@ namespace test{
     {
         if(!testEnabeld){
             for(auto& test: tests)
-            if(ImGui::Button(test.first.c_str()))
-                setLoadedTest( test.second());
+                if(ImGui::Button(test.first.c_str()))
+                    setLoadedTest( test.second());
         }
         else
         {
