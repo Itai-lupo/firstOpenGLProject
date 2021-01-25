@@ -11,7 +11,8 @@
 
 #include "imgui/imgui.h"
 
-#include "renderer.h"
+#include "handleOpenGlErrors.h"
+
 
 #include "indexBuffer.h"
 #include "vertexBuffer.h"
@@ -19,6 +20,7 @@
 
 #include "shader.h"
 
+#include "renderer.h"
 
 #include "tests/testClearColor.h"
 #include "testTexture2D.h"

@@ -1,22 +1,9 @@
 #include "renderer.h"
+#include "handleOpenGlErrors.h"
 
 #include <iostream>
 
 using namespace std;
-
-
-void GLClearErrors()
-{
-    while(glGetError() != GL_NO_ERROR);
-}
-
-void GLCheckError(const char *function, const char *file, int line)
-{
-    GLenum error;
-    while((error = glGetError()) != GL_NO_ERROR)
-        cout << "[OpenGL error] (" << error << "): " << function << " " << file << ":" << line << endl;
-    
-}
 
 
 void Renderer::Draw(const VertexArray& va, const  IndexBuffer& ib, const  Shader& shader)
